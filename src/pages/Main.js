@@ -1,14 +1,14 @@
 import React from "react";
-import Main from "./pages/Main";
+import Wrapper from "./Wrapper";
 
-const App = () => {
+const Main = () => {
     return (
         <>
             <div>
-                <Main />
+                <Wrapper />
             </div>
         </>
     );
 };
 
-export default App;
+export default Main;
