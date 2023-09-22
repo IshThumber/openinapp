@@ -7,12 +7,7 @@ const Main = () => {
     // const user = "test";
     if (isLoading) {
         return (
-            <div
-                className="flex justify-center items-center
-        "
-            >
-                Loading ...
-            </div>
+            <div className="flex justify-center items-center">Loading ...</div>
         );
     }
     return (
