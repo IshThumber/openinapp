@@ -14,7 +14,7 @@ const App = () => {
                 <Route path="/" element={<Main />} />
                 <Route exact path="/login" element={<Login />} />
                 <Route
-                    path="/dashboard"
+                    path="/"
                     element={
                         isAuthenticated ? <Main /> : <Navigate to="/login" />
                     }
