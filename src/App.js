@@ -8,8 +8,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 const App = () => {
     const { isAuthenticated } = useAuth0();
 
-    console.log(isAuthenticated);
-
     return (
         <BrowserRouter>
             <Routes>
@@ -21,6 +19,11 @@ const App = () => {
                         isAuthenticated ? <Main /> : <Navigate to="/login" />
                     }
                 />
+                <Route
+                    path="/login"
+                    element={isAuthenticated ? <Login /> : <Navigate to="/" />}
+                />
+                <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </BrowserRouter>
     );
