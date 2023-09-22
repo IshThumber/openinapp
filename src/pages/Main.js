@@ -3,16 +3,23 @@ import Wrapper from "./Wrapper";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Main = () => {
-    // const { user, isAuthenticated, isLoading } = useAuth0();
-    const user = "test";
-    // if (isLoading) {
-    //     return <div>Loading ...</div>;
-    // }
+    const { user, isAuthenticated, isLoading } = useAuth0();
+    // const user = "test";
+    if (isLoading) {
+        return (
+            <div
+                className="flex justify-center items-center
+        "
+            >
+                Loading ...
+            </div>
+        );
+    }
     return (
         <>
             <div>
-                <Wrapper user={user} />
-                {/* {isAuthenticated && <Wrapper user={user} />} */}
+                {/* <Wrapper user={user} /> */}
+                {isAuthenticated && <Wrapper user={user} />}
             </div>
         </>
     );
