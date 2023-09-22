@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Form from "./Form";
 
 const Basic = (props) => {
     return (
         <>
             <Form
+                setStateCheck={props.setStateCheck}
                 active="basic"
                 basicData={props.basicData}
                 setBasicData={props.setBasicData}

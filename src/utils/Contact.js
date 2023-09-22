@@ -5,6 +5,7 @@ const Contact = (props) => {
     return (
         <>
             <Form
+                setStateCheck={props.setStateCheck}
                 active="contact"
                 basicData={props.basicData}
                 setBasicData={props.setBasicData}

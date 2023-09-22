@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
+import {
+    ArrowDownUp,
+    Bell,
+    Clock2,
+    Hourglass,
+    Plus,
+    Sigma
+} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import ReactModal from "react-modal";
 import DynamicBarChart from "../components/Barchart";
 import DynamicDoughnutChart from "../components/DoughNut";
+import Sidebar from "../components/Sidebar";
 import Box from "../utils/Box";
-import { ArrowDownUp, Clock2, Hourglass, Plus, Sigma } from "lucide-react";
-import ReactModal from "react-modal";
-import Modal from "../utils/Modal";
 import Card from "../utils/Card";
+import Modal from "../utils/Modal";
 
 const Wrapper = () => {
-    const [data, setData] = useState([]);
-    const [quota, setQuota] = useState([]);
-    const [usd, setUsd] = useState([]);
-    const [eur, setEur] = useState([]);
-    const [gbp, setGbp] = useState([]);
-
+    const [data, setData] = useState({});
+    const [quota, setQuota] = useState({});
+    const [usd, setUsd] = useState({});
+    const [eur, setEur] = useState({});
+    const [gbp, setGbp] = useState({});
     const [isOpen, setIsOpen] = useState(false);
     const [basicData, setBasicData] = useState({
         name: "",
@@ -23,70 +29,93 @@ const Wrapper = () => {
         insta: "",
         yt: ""
     });
+    const [stateCheck, setStateCheck] = useState(false);
 
-    // {
-    // const fetchData = async () => {
-    //     return await fetch(
-    //         `https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/latest/INR`
-    //     )
-    //         .then((res) => res.json())
-    //         .then((json) => setData(json));
-    // };
+    const key = "e33214128e2e0db90e5efff5";
+    const url = `https://v6.exchangerate-api.com/v6/${key}`;
+    const latest = `${url}/latest/INR`;
+    const quotaUrl = `${url}/quota`;
 
-    // const fetchquota = async () => {
-    //     return await fetch(
-    //         `https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/quota`
-    //     )
-    //         .then((res) => res.json())
-    //         .then((json) => setQuota(json));
-    // };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${latest}`);
+                // "https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/latest/INR"
+                if (response.ok) {
+                    const json = await response.json();
+                    setData(json);
+                } else {
+                    throw new Error("Failed to fetch data");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
 
-    // const fetchDatausd = async () => {
-    //     return await fetch(
-    //         `https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/pair/USD/INR/100`
-    //     )
-    //         .then((res) => res.json())
-    //         .then((json) => setUsd(json));
-    // };
+        const fetchQuota = async () => {
+            try {
+                const response = await fetch(`${quotaUrl}`);
+                // "https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/quota"
+                if (response.ok) {
+                    const json = await response.json();
+                    setQuota(json);
+                } else {
+                    throw new Error("Failed to fetch quota data");
+                }
+            } catch (error) {
+                console.error("Error fetching quota data:", error);
+            }
+        };
 
-    // const fetchDataeur = async () => {
-    //     return await fetch(
-    //         `https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/pair/EUR/INR/100`
-    //     )
-    //         .then((res) => res.json())
-    //         .then((json) => setEur(json));
-    // };
+        const fetchCurrencyData = async (currency) => {
+            try {
+                const urlcurrency = `${url}/pair/${currency}/INR/100`;
+                const response = await fetch(`${urlcurrency}`);
+                // `https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/pair/${currency}/INR/100`
+                if (response.ok) {
+                    const json = await response.json();
+                    switch (currency) {
+                        case "USD":
+                            setUsd(json);
+                            break;
+                        case "EUR":
+                            setEur(json);
+                            break;
+                        case "GBP":
+                            setGbp(json);
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    throw new Error(`Failed to fetch ${currency} data`);
+                }
+            } catch (error) {
+                console.error(`Error fetching ${currency} data:`, error);
+            }
+        };
 
-    // const fetchDatagbp = async () => {
-    //     return await fetch(
-    //         `https://v6.exchangerate-api.com/v6/e33214128e2e0db90e5efff5/pair/GBP/INR/100`
-    //     )
-    //         .then((res) => res.json())
-    //         .then((json) => setGbp(json));
-    // };
-
-    // useEffect(() => {
-    //     fetchData();
-    //     fetchquota();
-    //     fetchDatausd();
-    //     fetchDataeur();
-    //     fetchDatagbp();
-    // }, []);
-    // }
+        fetchData();
+        fetchQuota();
+        fetchCurrencyData("USD");
+        fetchCurrencyData("EUR");
+        fetchCurrencyData("GBP");
+    }, []);
 
     const handleClose = () => {
         setIsOpen(false);
     };
-    const time = data.time_last_update_utc;
-    const tq = quota.plan_quota;
-    const rq = quota.requests_remaining;
-    const rf = quota.refresh_day_of_month;
-    let month = new Date().getMonth() + 2;
 
-    let text = `Last updated on ${time}`;
+    let time = data.time_last_update_utc;
+    let tq = quota.plan_quota;
+    let rq = quota.requests_remaining;
+    let rf = quota.refresh_day_of_month;
+
     let totalQuota = `Total Quota: ${tq}`;
     let remainingQuota = `Remaining Quota: ${rq}`;
-    let refresh = `Refreshs on day ${rf}/${month}`;
+    let refresh = `Refreshs on day ${rf}/${new Date().getMonth() + 2}`;
+    let text = `Last updated on ${time}`;
+
     if (
         time === undefined ||
         tq === undefined ||
@@ -101,28 +130,65 @@ const Wrapper = () => {
     return (
         <>
             <div className="w-full flex">
-                <div className="w-1/6 bg-pink-300 h-full">
+                <div className="w-1/6 h-full">
                     <Sidebar />
                 </div>
-                <div className="w-5/6 bg-purple-300 p-2 flex flex-col justify-between">
-                    <div className="bg-cyan-200 flex flex-row justify-between">
+                <div className="w-5/6 p-2 flex flex-col justify-between">
+                    <div className="flex flex-row justify-between items-center m-3 mb-5">
                         <h1 className="text-xl">Dashboard</h1>
-                        <h1 className="text-xl">Dashboard</h1>
+                        <div className="flex flex-row items-center gap-7">
+                            <div>
+                                <div>
+                                    <input
+                                        className="border border-gray-800 rounded-xl p-2 placeholder:text-xs items-center text-sm"
+                                        type="text"
+                                        placeholder="Search"
+                                    />
+                                </div>
+                            </div>
+                            <div className="p-2 bg-orange-100 rounded-full">
+                                <Bell size={16} />
+                            </div>
+                            <div>
+                                <img
+                                    className="rounded-full w-[40px] h-[40px] aspect-square"
+                                    src="http://placehold.it/40x50"
+                                    alt="profile"
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div className="bg-green-200 flex flex-row justify-between">
-                        <Box name={totalQuota} icon={<Sigma size={16} />} />
+                    <div className="flex flex-row justify-between">
+                        <Box
+                            name={totalQuota}
+                            icon={<Sigma size={18} />}
+                            title="Total Quota"
+                            color="cyan"
+                        />
                         <Box
                             name={remainingQuota}
-                            icon={<Hourglass size={16} />}
+                            icon={<Hourglass size={18} />}
+                            title="Remaining Quota"
+                            color={"pink"}
                         />
-                        <Box name={refresh} icon={<Clock2 size={16} />} />
-                        <Box name={text} icon={<ArrowDownUp size={16} />} />
+                        <Box
+                            name={refresh}
+                            icon={<Clock2 size={18} />}
+                            title="Refreshes in"
+                            color="green"
+                        />
+                        <Box
+                            name={text}
+                            icon={<ArrowDownUp size={18} />}
+                            title="Updated on"
+                            color="yellow"
+                        />
                     </div>
-                    <div className="bg-white w-3/5 p-7 border-2 border-black rounded-3xl shadow-xl m-3">
+                    <div className="bg-white w-3/5 p-7 border border-gray-700 rounded-3xl shadow-xl m-3">
                         <DynamicBarChart data={data} />
                     </div>
-                    <div className="bg-yellow-500 flex flex-row">
-                        <div className="bg-white w-1/2 border-2 border-black rounded-3xl shadow-xl mx-3">
+                    <div className="flex flex-row">
+                        <div className="bg-white w-1/2 border border-gray-700 rounded-3xl shadow-xl m-3">
                             <DynamicDoughnutChart
                                 usd={usd}
                                 eur={eur}
@@ -130,47 +196,55 @@ const Wrapper = () => {
                             />
                         </div>
 
-                        <div className="bg-white w-1/2 border-2 border-black rounded-3xl shadow-xl mx-3">
-                            {/* map */}
-                            <div className="flex justify-center items-center h-full">
-                                <button onClick={setIsOpen}>
-                                    <div className="p-2 bg-slate-200 rounded-full w-fit h-fit ">
-                                        <Plus />
+                        <div className="bg-white w-1/2 border border-gray-700 rounded-3xl shadow-xl m-3">
+                            {!stateCheck ? (
+                                <div className="flex justify-center items-center h-full">
+                                    <div className="items-center flex flex-col gap-2 text-sm">
+                                        <button onClick={setIsOpen}>
+                                            <div className="p-2 bg-slate-200 rounded-full w-fit h-fit ">
+                                                <Plus />
+                                            </div>
+                                        </button>
+                                        Add Profile
                                     </div>
-                                </button>
-
-                                <ReactModal
-                                    isOpen={isOpen}
-                                    onRequestClose={() => setIsOpen(false)}
-                                    // className="bg-pink-200 inline-block p-5"
-                                    overlayClassName="flex flex-col justify-center items-center bg-yellow-200"
-                                    style={{
-                                        content: {
-                                            position: "absolute",
-                                            top: "40px",
-                                            left: "40px",
-                                            right: "40px",
-                                            bottom: "40px",
-                                            border: "1px solid #ccc",
-                                            background: "#fff",
-                                            overflow: "auto",
-                                            WebkitOverflowScrolling: "touch",
-                                            borderRadius: "4px",
-                                            outline: "none",
-                                            padding: "20px",
-                                            width: "50%",
-                                            margin: "auto"
-                                        }
-                                    }}
-                                >
-                                    <Modal
-                                        onclose={handleClose}
-                                        basicData={basicData}
-                                        setBasicData={setBasicData}
-                                    />
-                                </ReactModal>
-                            </div>
-                            <Card basicData={basicData} />
+                                    <ReactModal
+                                        isOpen={isOpen}
+                                        onRequestClose={() => setIsOpen(false)}
+                                        // className="bg-pink-200 inline-block p-5"
+                                        overlayClassName="flex flex-col justify-center items-center bg-yellow-200"
+                                        style={{
+                                            content: {
+                                                position: "absolute",
+                                                top: "40px",
+                                                left: "40px",
+                                                right: "40px",
+                                                bottom: "40px",
+                                                border: "1px solid #ccc",
+                                                background: "#fff",
+                                                overflow: "auto",
+                                                WebkitOverflowScrolling:
+                                                    "touch",
+                                                borderRadius: "4px",
+                                                outline: "none",
+                                                padding: "20px",
+                                                width: "50%",
+                                                margin: "auto"
+                                            }
+                                        }}
+                                    >
+                                        <Modal
+                                            setStateCheck={setStateCheck}
+                                            onclose={handleClose}
+                                            basicData={basicData}
+                                            setBasicData={setBasicData}
+                                        />
+                                    </ReactModal>
+                                </div>
+                            ) : (
+                                <div className="">
+                                    <Card basicData={basicData} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

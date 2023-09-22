@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 const Form = (props) => {
     const handleChange = (e) => {
@@ -11,7 +11,6 @@ const Form = (props) => {
     };
     console.log(props.basicData);
     // console.log(nameRef.current.value);
-    const formRef = useRef(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,6 +24,7 @@ const Form = (props) => {
         };
 
         props.setBasicData(temp);
+        props.setStateCheck(true);
 
         props.onclose();
 
@@ -32,7 +32,7 @@ const Form = (props) => {
 
         // formRef.current?.reset();
     };
-
+    let active = props.active;
     return (
         <>
             <div>
@@ -40,74 +40,104 @@ const Form = (props) => {
                     <form onSubmit={handleSubmit}>
                         {props.active === "basic" && (
                             <>
-                                <div>
-                                    <label for="name">Enter Name*</label>
-                                    <div className="p-2 border-1 border rounded-xl flex flex-col">
-                                        <input
-                                            onChange={handleChange}
-                                            type="text"
-                                            placeholder="Eg. John Doe"
-                                            name="name"
-                                            value={props.basicData.name}
-                                        />
+                                <div className="gap-3 flex flex-col">
+                                    <div>
+                                        <label forHTML="name">
+                                            Enter Name*
+                                        </label>
+                                        <div className="p-2 border-1 border rounded-xl flex flex-col">
+                                            <input
+                                                onChange={handleChange}
+                                                type="text"
+                                                placeholder="Eg. John Doe"
+                                                name="name"
+                                                value={props.basicData.name}
+                                                required
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div>
-                                    <label for="email">Enter Email*</label>
-                                    <div className="p-2 border-1 border rounded-xl flex flex-col">
-                                        <input
-                                            onChange={handleChange}
-                                            type="text"
-                                            placeholder="Eg. johndoe@gmail.com"
-                                            name="email"
-                                            value={props.basicData.email}
-                                        />
+                                    <div>
+                                        <label forHTML="email">
+                                            Enter Email*
+                                        </label>
+                                        <div className="p-2 border-1 border rounded-xl flex flex-col">
+                                            <input
+                                                onChange={handleChange}
+                                                type="text"
+                                                placeholder="Eg. johndoe@gmail.com"
+                                                name="email"
+                                                value={props.basicData.email}
+                                                required
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div>
-                                    <label for="phone">Enter Phone*</label>
-                                    <div className="p-2 border-1 border rounded-xl flex flex-col">
-                                        <input
-                                            onChange={handleChange}
-                                            type="tel"
-                                            placeholder="91999999999"
-                                            name="phone"
-                                            value={props.basicData.phone}
-                                        />
+                                    <div>
+                                        <label forHTML="phone">
+                                            Enter Phone*
+                                        </label>
+                                        <div className="p-2 border-1 border rounded-xl flex flex-col">
+                                            <input
+                                                onChange={handleChange}
+                                                type="tel"
+                                                placeholder="91999999999"
+                                                name="phone"
+                                                value={props.basicData.phone}
+                                                required
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </>
                         )}
                         {props.active === "contact" && (
                             <>
-                                <div>
-                                    <label for="insta">Instagram</label>
-                                    <div className="p-2 border-1 border rounded-xl flex flex-col">
-                                        <input
-                                            onChange={handleChange}
-                                            type="text"
-                                            placeholder="Eg. John Doe"
-                                            name="insta"
-                                            value={props.basicData.insta}
-                                        />
-                                    </div>
-                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <div className="gap-3 flex flex-col justify-between">
+                                        <div>
+                                            <label forHTML="insta">
+                                                Instagram Link (Optional)
+                                            </label>
+                                            <div className="p-2 border-1 border rounded-xl flex flex-col">
+                                                <input
+                                                    onChange={handleChange}
+                                                    type="text"
+                                                    placeholder="Eg. instagram.com/johndoe"
+                                                    name="insta"
+                                                    value={
+                                                        props.basicData.insta
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
 
-                                <div>
-                                    <label for="yt">Youtube</label>
-                                    <div className="p-2 border-1 border rounded-xl flex flex-col">
-                                        <input
-                                            onChange={handleChange}
-                                            type="text"
-                                            placeholder="Eg. johndoe@gmail.com"
-                                            name="yt"
-                                            value={props.basicData.yt}
-                                        />
+                                        <div>
+                                            <label forHTML="yt">
+                                                Youtube Link (Optional)
+                                            </label>
+                                            <div className="p-2 border-1 border rounded-xl flex flex-col">
+                                                <input
+                                                    onChange={handleChange}
+                                                    type="text"
+                                                    placeholder="Eg. youtube.com/johndoe"
+                                                    name="yt"
+                                                    value={props.basicData.yt}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-end">
+                                        <button
+                                            type="submit"
+                                            className="bg-blue-600 border text-white
+                                            p-2 my-2 px-5 rounded-lg"
+                                        >
+                                            Submit
+                                        </button>
                                     </div>
                                 </div>
-                                <button type="submit">Submit</button>
                             </>
                         )}
                     </form>
