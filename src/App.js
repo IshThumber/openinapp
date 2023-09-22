@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import Main from "./pages/Main";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-// import LoginButton from "./pages/Login";
 import Login from "./pages/Login";
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 const App = () => {
-    // Assume isUserLoggedIn is a state variable that tracks the user's login status
-    // const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const { isAuthenticated } = useAuth0();
 
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Main />} />
-                <Route path="/login" element={<Login />} />
+                <Route exact path="/login" element={<Login />} />
+                <Route
+                    path="/dashboard"
+                    element={
+                        isAuthenticated ? <Main /> : <Navigate to="/login" />
+                    }
+                />
             </Routes>
         </BrowserRouter>
     );
