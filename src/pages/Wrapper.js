@@ -30,8 +30,8 @@ const Wrapper = ({ user }) => {
     });
     const [stateCheck, setStateCheck] = useState(false);
 
-    const key = "e33214128e2e0db90e5efff5";
-    // const key = "99f6bba557bf78e3974542d8"
+    // const key = "e33214128e2e0db90e5efff5";
+    const key = "99f6bba557bf78e3974542d8"
     const url = `https://v6.exchangerate-api.com/v6/${key}`;
     const latest = `${url}/latest/INR`;
     const quotaUrl = `${url}/quota`;
