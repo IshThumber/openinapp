@@ -28,9 +28,9 @@ const DynamicDoughnutChart = ({ usd, eur, gbp }) => {
                                 label: "My First Dataset",
                                 data: [inrusd, inreur, inrgbp],
                                 backgroundColor: [
-                                    "rgb(255, 99, 132)",
-                                    "rgb(54, 162, 235)",
-                                    "rgb(255, 205, 86)"
+                                    "#FF6384",
+                                    "#FF9F40",
+                                    "#4BC0C0"
                                 ],
                                 hoverOffset: 4,
                                 cutout: 50,
@@ -51,15 +51,21 @@ const DynamicDoughnutChart = ({ usd, eur, gbp }) => {
                     at every 100 INR.
                 </span>
                 <ul className="text-sm px-4 py-3">
-                    <li type="disc" className="py-1 indent-3">
+                    <li
+                        type="disc"
+                        className="py-1 indent-3 marker:text-[#FF6384] marker:text-xl"
+                    >
                         United States Dollar: ${inrusd}
                     </li>
-                    <li type="disc" className="py-1 indent-3">
+                    <li
+                        type="disc"
+                        className="py-1 indent-3 marker:text-[#FF9F40] marker:text-xl"
+                    >
                         Euro: €{inreur}
                     </li>
                     <li
                         type="disc"
-                        className="py-1 indent-3 marker:text-yellow-600"
+                        className="py-1 indent-3 marker:text-[#4BC0C0] marker:text-xl"
                     >
                         Pound Sterling: £{inrgbp}
                     </li>

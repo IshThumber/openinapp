@@ -87,22 +87,22 @@ const DynamicBarChart = ({ data }) => {
                             label: "My First Dataset",
                             data: [usd, eur, gbp, chf, cad, aud],
                             backgroundColor: [
-                                "rgba(255, 99, 132, 0.2)",
-                                "rgba(255, 159, 64, 0.2)",
-                                "rgba(255, 205, 86, 0.2)",
-                                "rgba(75, 192, 192, 0.2)",
-                                "rgba(54, 162, 235, 0.2)",
-                                "rgba(153, 102, 255, 0.2)",
-                                "rgba(201, 203, 207, 0.2)"
+                                "#FF638433",
+                                "#FF9F4033",
+                                "#4BC0C033",
+                                "#FFCD5633",
+                                "#36A2EB33",
+                                "#9966FF33",
+                                "#C9CBDF33"
                             ],
                             borderColor: [
-                                "rgb(255, 99, 132)",
-                                "rgb(255, 159, 64)",
-                                "rgb(255, 205, 86)",
-                                "rgb(75, 192, 192)",
-                                "rgb(54, 162, 235)",
-                                "rgb(153, 102, 255)",
-                                "rgb(201, 203, 207)"
+                                "#FF6384",
+                                "#FF9F40",
+                                "#4BC0C0",
+                                "#FFCD56",
+                                "#36A2EB",
+                                "#9966FF",
+                                "#C9CBDF"
                             ],
                             borderWidth: 1,
                             barThickness: 60,

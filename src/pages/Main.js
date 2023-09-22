@@ -1,11 +1,18 @@
 import React from "react";
 import Wrapper from "./Wrapper";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Main = () => {
+    // const { user, isAuthenticated, isLoading } = useAuth0();
+    const user = "test";
+    // if (isLoading) {
+    //     return <div>Loading ...</div>;
+    // }
     return (
         <>
             <div>
-                <Wrapper />
+                <Wrapper user={user} />
+                {/* {isAuthenticated && <Wrapper user={user} />} */}
             </div>
         </>
     );
